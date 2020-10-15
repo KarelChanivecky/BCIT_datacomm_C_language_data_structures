@@ -39,7 +39,7 @@ static bool get_bit_value(uint8_t val, uint8_t mask) {
 
 bit_array bit_array_create(void) {
     bit_array this = calloc(1, sizeof(struct bit_array_s));
-    if (this == NULL) return OPERATION_FAIL;
+    if (this == NULL) return NULL;
     return this;
 }
 
