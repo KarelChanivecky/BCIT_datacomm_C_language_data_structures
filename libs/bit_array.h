@@ -25,6 +25,7 @@ struct bit_array_s {
     uint8_t * array;
     size_t bit_length;
     size_t bit_capacity;
+    bool enable_error_logs;
 };
 
 typedef struct bit_array_s * bit_array;
@@ -48,6 +49,12 @@ void bit_array_destroy(bit_array * p_this);
  * @param min_bit_capacity minimum number of bits the array should be able to hold
  */
 void bit_array_init(bit_array this, size_t min_bit_capacity);
+
+/**
+ * Use this to enable and disable errors printed to stderr.
+ * Logging is disabled by default.
+ */
+void bit_array_set_logging(bit_array this, bool enable_logging);
 
 /**
  * Checks the bit at the specified index and returns its value (1 or 0).

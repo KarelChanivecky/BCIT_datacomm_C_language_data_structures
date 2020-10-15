@@ -23,7 +23,6 @@ bit_array bit_array_create(void) {
 }
 
 void bit_array_destroy(bit_array * p_this) {
-    free((*p_this)->array);
     free(*p_this);
     *p_this = NULL;
 }
@@ -33,6 +32,11 @@ void bit_array_init(bit_array this, size_t initial_bit_capacity) {
     this->array = calloc(byte_capacity, sizeof(uint8_t));
     this->bit_capacity = byte_capacity * BYTE;
     this->bit_length = 0;
+    this->enable_error_logs = false;
+}
+
+void bit_array_set_logging(bit_array this, bool enable_logging) {
+    this->enable_error_logs = enable_logging;
 }
 
 static void bit_array_set_one(bit_array this, size_t index) {
@@ -49,7 +53,7 @@ static bool bit_array_check(bit_array this, size_t index) {
 
 bool bit_array_check_bit(bit_array this, size_t index) {
     if (index >= this->bit_length) {
-        fprintf(stderr, "bit_array_set_bit: index out of bounds.\n");
+        if (this->enable_error_logs) fprintf(stderr, "bit_array_set_bit: index out of bounds.\n");
         return -1;
     }
     return bit_array_check(this, index);
@@ -57,7 +61,7 @@ bool bit_array_check_bit(bit_array this, size_t index) {
 
 uint8_t bit_array_check_byte(bit_array this, size_t index) {
     if ((index + BYTE) > this->bit_length) {
-        fprintf(stderr, "bit_array_set_bit: index out of bounds.\n");
+        if (this->enable_error_logs) fprintf(stderr, "bit_array_set_bit: index out of bounds.\n");
         return -1;
     }
     uint8_t byte = 0;
@@ -75,7 +79,7 @@ uint8_t bit_array_check_byte(bit_array this, size_t index) {
 
 void bit_array_add_bit(bit_array this, bool bit_value) {
     if (this->bit_length >= this->bit_capacity) {
-        fprintf(stderr, "bit_array_add_bit: byte_array capacity reached.\n");
+        if (this->enable_error_logs) fprintf(stderr, "bit_array_add_bit: byte_array capacity reached.\n");
         return;
     }
 
@@ -88,7 +92,7 @@ void bit_array_add_bit(bit_array this, bool bit_value) {
 
 void bit_array_set_bit(bit_array this, size_t index, bool bit_value) {
     if (index >= this->bit_length) {
-        fprintf(stderr, "bit_array_set_bit: index out of bounds.\n");
+        if (this->enable_error_logs) fprintf(stderr, "bit_array_set_bit: index out of bounds.\n");
         return;
     }
 
@@ -116,7 +120,7 @@ static bool get_bit_value(uint8_t val, uint8_t mask) {
 
 void bit_array_add_byte(bit_array this, uint8_t byte_value) {
     if ((this->bit_length + BYTE) > this->bit_capacity) {
-        fprintf(stderr, "bit_array_add_byte: byte_array capacity reached.\n");
+        if (this->enable_error_logs) fprintf(stderr, "bit_array_add_byte: byte_array capacity reached.\n");
         return;
     }
 
