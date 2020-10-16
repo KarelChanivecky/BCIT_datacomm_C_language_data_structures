@@ -6,6 +6,9 @@ This repository is a compilation of data structures implemented by datacomm stud
 - nodes must only contain a void* pointer, and pointers to other nodes of the same structure
 - do not print to screen, including error logging. Exceptions are: error logging can be deactivated; the function's explicit goal is to produce such output
 - function calls that may produce an error must be checked. Appropriate error code must be returned. If the function is already returning a pointer, return null. If the function is returning a numerical value, request a status* as parameter and use it to set the return code
+- if a struct is defined, must also do a typedef for a pointer to the struct. E.g. 
+struct foo_s {}; 
+typedef struct foo_s * foo; 
 
 #### must provide
 - means to get size
