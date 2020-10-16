@@ -8,7 +8,7 @@
  *
  * This header defines a doubly linked list.
  *
- * It will provide push/pop/peek to head or tail at constant time.
+ * It will provide dlinked_push/pop/peek to head or tail at constant time.
  * It will also provide size at constant time.
  */
 
@@ -26,12 +26,12 @@
 /**
  * Represent a linked list node.
  */
-struct list_dlink_s {
-    struct list_dlink_s * next;
-    struct list_dlink_s * prev;
+struct dlink_s {
+    struct dlink_s * next;
+    struct dlink_s * prev;
     void * content;
 };
-typedef struct list_dlink_s * dlink;
+typedef struct dlink_s * dlink;
 
 /**
  * Represent a doubly linked list.
@@ -47,13 +47,13 @@ typedef struct dlinked_list_s * dlinked_list;
  * Initialize a dynamically allocated doubly linked list.
  * @return a dynamically allocated linked list. Will return NULL if memory allocation fails
  */
-dlinked_list create_linked_list();
+dlinked_list create_dlinked_list();
 
 /**
  * Free a dynamically allocated linked list.
- * @param list a dlinked_list *. Will be set to NULL
+ * @param list a dlinked_list *. Will be dlinked_set_value to NULL
  */
-void free_list( dlinked_list * list );
+void free_dlinked_list( dlinked_list * list );
 
 /**
  * Add an element at the end.
@@ -61,7 +61,7 @@ void free_list( dlinked_list * list );
  * @param content the content of the new element
  * @return SUCCESS for success, else one of the defined error codes
  */
-int push( dlinked_list list, void * content );
+int dlinked_push( dlinked_list list, void * content );
 
 /**
  * Add an element at the start.
@@ -69,36 +69,36 @@ int push( dlinked_list list, void * content );
  * @param content the content of the new element
  * @return SUCCESS for success, else one of the defined error codes
  */
-int push_head( dlinked_list list, void * content );
+int dlinked_push_head( dlinked_list list, void * content );
 
 /**
  * Remove the first element of the list and return its content.
  * @param list a dlinked_list with at least one element
  * @return the content of the first element. If list was empty, will return NULL
  */
-void * pop_head( dlinked_list list );
+void * dlinked_pop_head( dlinked_list list );
 
 /**
  * Remove the last element of the list and return its content.
  * @param list a dlinked_list with at least one element
  * @return the content of the first element. If list was empty, will return NULL
  */
-void * pop_tail( dlinked_list list );
+void * dlinked_pop_tail( dlinked_list list );
 
 /**
  * Get the value in the tail.
  * @param list the list to peek into
  * @return the value in the tail
  */
-void * peek_tail( dlinked_list list );
+void * dlinked_peek_tail( dlinked_list list );
 
 /**
  * Get the element at the given index.
- * @param list the list to get from
+ * @param list the list to dlinked_get_value from
  * @param index must be such as 0 <= index < size
  * @return the element at the index or NULL if out of bounds
  */
-void * get( dlinked_list list, size_t index );
+void * dlinked_get_value( dlinked_list list, size_t index );
 
 /**
  * Remove element at given index and return its content.
@@ -106,7 +106,7 @@ void * get( dlinked_list list, size_t index );
  * @param index must be such as 0 <= index < size
  * @return the element at the index or NULL if out of bounds
  */
-void * extract( dlinked_list list, size_t index );
+void * dlinked_extract_value( dlinked_list list, size_t index );
 
 /**
  * Insert an element at the given index.
@@ -114,17 +114,17 @@ void * extract( dlinked_list list, size_t index );
  * Will displace the next elements by 1 index.
  *
  * @param index the exact index to do the insertion. index must be such as 0 <= index < size
- * @param content the content to insert
+ * @param content the content to dlinked_insert_value
  * @return SUCCESS or one of the defined error codes
  */
-int insert( dlinked_list list, size_t index, void * content);
+int dlinked_insert_value( dlinked_list list, size_t index, void * content);
 
 /**
  * Set the given content at the given index.
  * @param index must be such as 0 <= index < size
  * @return SUCCESS or one of the defined errors
  */
-int set( dlinked_list list, size_t index, void * content );
+int dlinked_set_value( dlinked_list list, size_t index, void * content );
 
 /**
  * Get the index of a given element.
@@ -137,7 +137,7 @@ int set( dlinked_list list, size_t index, void * content );
  * if error occurred, one of the defined error codes
  * @return if key is contained, the index, if not found or error 0.
  */
-size_t index_of( dlinked_list list, void * key, int(*comparator)(void *, void *), int * result_code);
+size_t dlinked_index_of_value( dlinked_list list, void * key, int(*comparator)( void *, void *), int * result_code);
 
 
 

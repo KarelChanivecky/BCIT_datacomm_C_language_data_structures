@@ -8,7 +8,7 @@
  *
  * This header defines a doubly linked list.
  *
- * It will provide push/pop/peek to head or tail at constant time.
+ * It will provide dlinked_push/pop/peek to head or tail at constant time.
  * It will also provide size at constant time.
  */
 
@@ -21,7 +21,7 @@
  * @return the new node. May return NULL
  */
 static dlink create_link( void * content ) {
-    dlink l = ( dlink ) malloc( sizeof( struct list_dlink_s ));
+    dlink l = ( dlink ) malloc( sizeof( struct dlink_s ));
     if ( !l ) {
         return NULL;
     }
@@ -93,7 +93,7 @@ void free_list( dlinked_list * list ) {
     *list = NULL;
 }
 
-dlinked_list create_linked_list() {
+dlinked_list dlinked_create_linked_list() {
     dlinked_list ll = ( dlinked_list ) malloc( sizeof( struct dlinked_list_s ));
     if ( !ll ) {
         return NULL;
@@ -120,7 +120,7 @@ int initialize_head( dlinked_list list, void * content ) {
     return SUCCESS;
 }
 
-int push( dlinked_list list, void * content ) {
+int dlinked_push( dlinked_list list, void * content ) {
     if ( !list ) {
         return BAD_ARGS;
     }
@@ -141,7 +141,7 @@ int push( dlinked_list list, void * content ) {
     return SUCCESS;
 }
 
-int push_head( dlinked_list list, void * content ) {
+int dlinked_push_head( dlinked_list list, void * content ) {
     if (!list) {
         return BAD_ARGS;
     }
@@ -159,7 +159,7 @@ int push_head( dlinked_list list, void * content ) {
     return SUCCESS;
 }
 
-void * pop_head( dlinked_list list ) {
+void * dlinked_pop_head( dlinked_list list ) {
     if ( !list || !list->head ) {
         return NULL;
     }
@@ -176,7 +176,7 @@ void * pop_head( dlinked_list list ) {
     return content;
 }
 
-void * pop_tail( dlinked_list list ) {
+void * dlinked_pop_tail( dlinked_list list ) {
     if (!list || !list->tail) {
         return NULL;
     }
@@ -195,14 +195,14 @@ void * pop_tail( dlinked_list list ) {
     return content;
 }
 
-void * peek_tail( dlinked_list list ) {
+void * dlinked_peek_tail( dlinked_list list ) {
     if (!list || !list->tail) {
         return NULL;
     }
     return list->tail->content;
 };
 
-void * get( dlinked_list list, size_t index ) {
+void * dlinked_get_value( dlinked_list list, size_t index ) {
     if (!list || index < 0 || list->size <= index ) {
         return NULL;
     }
@@ -213,7 +213,7 @@ void * get( dlinked_list list, size_t index ) {
     return NULL;
 }
 
-void * extract( dlinked_list list, size_t index ) {
+void * dlinked_extract_value( dlinked_list list, size_t index ) {
     if (!list || index < 0 || list->size <= index ) {
         return NULL;
     }
@@ -233,12 +233,12 @@ void * extract( dlinked_list list, size_t index ) {
     return content;
 }
 
-int insert( dlinked_list list, size_t index, void * content) {
+int dlinked_insert_value( dlinked_list list, size_t index, void * content) {
     if (!list ) {
         return BAD_ARGS;
     }
     if (!list->head || index == 0) {
-        return push_head(list, content);
+        return dlinked_push_head( list, content );
     }
     dlink to_move = get_link( list->head, index);
     if (!to_move) {
@@ -256,7 +256,7 @@ int insert( dlinked_list list, size_t index, void * content) {
     return SUCCESS;
 }
 
-int set( dlinked_list list, size_t index, void * content ) {
+int dlinked_set_value( dlinked_list list, size_t index, void * content ) {
     if ( !list || !list->head ) {
         return BAD_ARGS;
     }
@@ -268,7 +268,7 @@ int set( dlinked_list list, size_t index, void * content ) {
     return SUCCESS;
 }
 
-size_t index_of( dlinked_list list, void * key, int(*comparator)(void *, void *), int * result_code) {
+size_t dlinked_index_of_value( dlinked_list list, void * key, int(*comparator)( void *, void *), int * result_code) {
     if (!list || !key || !comparator) {
         *result_code = BAD_ARGS;
         return 0;
