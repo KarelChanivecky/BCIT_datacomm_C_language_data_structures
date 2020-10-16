@@ -10,7 +10,7 @@
  */
 
 #include <stdio.h>
-#include "dlinked_list.h"
+#include "../linked_list/dlinked_list.h"
 
 static void test_create_linked_list() {
     dlinked_list l = create_linked_list();
