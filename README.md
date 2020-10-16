@@ -11,12 +11,12 @@ struct foo_s {};
 typedef struct foo_s * foo; 
 
 #### must provide
-- means to dlinked_get_value size
-- means to dlinked_insert_value
+- means to get size
+- means to insert value
 - means to remove
 - means to iterate through all values
-- means to dlinked_get_value a specific value
-- means to dlinked_set_value a specific value
+- means to get a specific value
+- means to set a specific value
 
 ### casing convention  
 snake_case
