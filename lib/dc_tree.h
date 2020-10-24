@@ -20,6 +20,13 @@ struct dc_tree_node_s {
 typedef struct dc_tree_node_s * dc_tree_node;
 
 /**
+ * Create a node with the given content and null children.
+ * @param content
+ * @return
+ */
+dc_tree_node dc_tree_create_node(void * content);
+
+/**
  * Recursively free all children of the given node.
  *
  * You would use this to delete a branch. For this use-case, it is your responsibility
