@@ -15,7 +15,6 @@
 #include "stdlib.h"
 #include "dlinked_list.h"
 #include "stdio.h"
-#include "stdbool.h"
 
 /**
  * Create a dynamically allocated dlinked_list node.
