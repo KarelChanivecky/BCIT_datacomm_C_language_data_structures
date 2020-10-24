@@ -25,7 +25,7 @@
 #define LHS_SMALLER -1
 #define LHS_EQUAL 1
 #define LHS_LARGER 2
-#define LHS_NOT_EQUAL 0
+
 
 /**
  * Represent a linked list node.
@@ -57,7 +57,7 @@ dlinked_list * dlinked_create_list();
  * Free a dynamically allocated linked list.
  * @param list a dlinked_list * *. Will be dlinked_set_value to NULL
  */
-void dlinked_free_list( dlinked_list * * list );
+void dlinked_free_list( dlinked_list ** list );
 
 /**
  * Add an element at the end.
@@ -134,7 +134,7 @@ int dlinked_set_value( const dlinked_list * const list, size_t index, void * con
  * Get the result of a given element.
  * @param list the list to search in
  * @param key the element to seek
- * @param comparator a predicate function, 1 for equality, 0 for inequality
+ * @param comparator a predicate function, must return stdbool.h true or false
  * @param result if key is contained, the result, else ignore
  * @return if key is found, success<br/>
  * if not found, FAILURE<br/>
@@ -147,7 +147,7 @@ int dlinked_index_of_value( const dlinked_list * const list,
 /**
  * Create a shallow copy.
  */
-dlinked_list * dlinked_shallow_copy(const dlinked_list * const src);
+dlinked_list * dlinked_shallow_copy( const dlinked_list * const src );
 
 /**
  * Sort a list using quicksort.
@@ -165,7 +165,7 @@ dlinked_list * dlinked_shallow_copy(const dlinked_list * const src);
  * @param comparator must return -1 if lhs < rhs, 0 if lhs = rhs, 1 if lhs > rhs
  * @return a shallow copy of list, sorted in ascending manner
  */
-dlinked_list * dlinked_quicksort(dlinked_list * list, int comparator(void*, void*));
+dlinked_list * dlinked_quicksort( dlinked_list * list, int comparator( void *, void * ));
 
 /**
  * Quicksort the given list.
@@ -179,13 +179,13 @@ dlinked_list * dlinked_quicksort(dlinked_list * list, int comparator(void*, void
  * @return a new list with the contents of list
  */
 dlinked_list * dlinked_quicksort_custom_error_handler( dlinked_list * list,
-                                                     int comparator( void *, void * ),
-                                                     void(*malloc_error_handler)(void*),
-                                                     void* err_status);
+                                                       int comparator( void *, void * ),
+                                                       void(* malloc_error_handler)( void * ),
+                                                       void * err_status );
 
 /**
  * Apply func to every element in list.
  */
-void dlink_map(const dlinked_list * const list, void(*func)(void*));
+void dlink_map( const dlinked_list * const list, void(* func)( void * ));
 
 #endif // DC_DLINKED_LIST_H
