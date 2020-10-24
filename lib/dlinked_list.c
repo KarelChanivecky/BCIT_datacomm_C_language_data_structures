@@ -85,8 +85,8 @@ static void free_heads( dlink ** h ) {
         free( this );
     }
 }
-
 void dlinked_free_list( dlinked_list ** list ) {
+
     if ( !list || !( *list )) {
         return;
     }
@@ -183,6 +183,7 @@ void * dlinked_pop_tail( dlinked_list * list ) {
         return NULL;
     }
     dlink * tail = list->tail;
+
     if ( !tail->prev ) {
         list->head = NULL;
         list->tail = NULL;
@@ -198,6 +199,7 @@ void * dlinked_pop_tail( dlinked_list * list ) {
 }
 
 void * dlinked_peek_tail( const dlinked_list * const list ) {
+
     if ( !list || !list->tail ) {
         return NULL;
     }
@@ -209,6 +211,7 @@ void * dlinked_get_value( const dlinked_list * const list, size_t index ) {
         return NULL;
     }
     dlink * l = get_link( list->head, index );
+
     if ( l ) {
         return l->content;
     }
@@ -220,6 +223,7 @@ void * dlinked_extract_value( dlinked_list * list, size_t index ) {
         return NULL;
     }
     dlink * l = get_link( list->head, index );
+
     if ( !l ) {
         return NULL;
     }
@@ -263,6 +267,7 @@ int dlinked_set_value( const dlinked_list * const list, size_t index, void * con
         return BAD_ARGS;
     }
     dlink * l = get_link( list->head, index );
+
     if ( !l ) {
         return OUT_OF_BOUND_ERR;
     }
@@ -280,6 +285,7 @@ int dlinked_index_of_value( const dlinked_list * const list,
     dlink * l = list->head;
     while ( l ) {
         if ( comparator( l->content, key ) == LHS_EQUAL ) {
+
             *result = index;
             return SUCCESS;
         }
