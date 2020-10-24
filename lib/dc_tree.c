@@ -7,12 +7,14 @@
 
 #include <stdlib.h>
 #include "dc_tree.h"
-#include "dc/stdlib.h"
 
 
 
-dc_tree_node dc_tree_create_node(void * content) {
-    dc_tree_node new_node = (dc_tree_node) dc_malloc(sizeof(struct dc_tree_node_s));
+dc_tree_node  * dc_tree_create_node(void * content) {
+    dc_tree_node  * new_node = (dc_tree_node  *) malloc(sizeof(struct dc_tree_node_s));
+    if (!new_node) {
+        return NULL;
+    }
     new_node->content = content;
     new_node->left = NULL;
     new_node->right = NULL;
@@ -20,7 +22,7 @@ dc_tree_node dc_tree_create_node(void * content) {
 }
 
 
-size_t dc_tree_free_branch( dc_tree_node * node ) {
+size_t dc_tree_free_branch( dc_tree_node  * * node ) {
     if (!node || !*node) {
         return 0;
     }
@@ -32,7 +34,7 @@ size_t dc_tree_free_branch( dc_tree_node * node ) {
 }
 
 
-size_t dc_tree_height( dc_tree_node tree ) {
+size_t dc_tree_height( dc_tree_node  * tree ) {
     if (!tree) {
         return 0;
     }
