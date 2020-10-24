@@ -15,6 +15,7 @@
 #include "stdlib.h"
 #include "dlinked_list.h"
 #include "stdio.h"
+#include "stdbool.h"
 
 /**
  * Create a dynamically allocated dlinked_list node.
@@ -85,6 +86,7 @@ static void free_heads( dlink ** h ) {
         free( this );
     }
 }
+
 void dlinked_free_list( dlinked_list ** list ) {
 
     if ( !list || !( *list )) {
@@ -284,7 +286,7 @@ int dlinked_index_of_value( const dlinked_list * const list,
     size_t index = 0;
     dlink * l = list->head;
     while ( l ) {
-        if ( comparator( l->content, key ) == LHS_EQUAL ) {
+        if ( comparator( l->content, key )) {
 
             *result = index;
             return SUCCESS;
@@ -295,18 +297,18 @@ int dlinked_index_of_value( const dlinked_list * const list,
     return FAILURE;
 }
 
-dlinked_list * dlinked_shallow_copy(const dlinked_list * const src) {
+dlinked_list * dlinked_shallow_copy( const dlinked_list * const src ) {
     if ( !src ) {
         return NULL;
     }
     dlinked_list * cp = dlinked_create_list();
-    if (!src->head){
+    if ( !src->head ) {
         return cp;
     }
-    initialize_head(cp, src->head->content);
+    initialize_head( cp, src->head->content );
     dlink * src_link = src->head->next;
-    while (src_link) {
-        dlinked_push(cp, src_link->content);
+    while ( src_link ) {
+        dlinked_push( cp, src_link->content );
         src_link = src_link->next;
     }
     return cp;
@@ -318,7 +320,7 @@ void default_malloc_error_handler() {
 }
 
 dlinked_list * dlinked_quicksort( dlinked_list * list, int comparator( void *, void * )) {
-    return dlinked_quicksort_custom_error_handler( dlinked_shallow_copy(list),
+    return dlinked_quicksort_custom_error_handler( dlinked_shallow_copy( list ),
                                                    comparator,
                                                    default_malloc_error_handler,
                                                    NULL);
@@ -364,13 +366,13 @@ dlinked_list * dlinked_quicksort_custom_error_handler( dlinked_list * list,
     return equal;
 }
 
-void dlink_map(const dlinked_list * const list, void(*func)(void*)) {
-    if (!list || !func) {
+void dlink_map( const dlinked_list * const list, void(* func)( void * )) {
+    if ( !list || !func ) {
         return;
     }
     dlink * link = list->head;
-    while (link) {
-        func(link->content);
+    while ( link ) {
+        func( link->content );
         link = link->next;
     }
 }
