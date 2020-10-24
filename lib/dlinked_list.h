@@ -135,6 +135,7 @@ int dlinked_set_value( const dlinked_list * const list, size_t index, void * con
  * @param list the list to search in
  * @param key the element to seek
  * @param comparator a predicate function, must return stdbool.h true or false
+ * <p>the key will be passed to the rhs argument</p>
  * @param result if key is contained, the result, else ignore
  * @return if key is found, success<br/>
  * if not found, FAILURE<br/>
