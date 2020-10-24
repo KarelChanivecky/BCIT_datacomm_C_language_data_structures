@@ -13,6 +13,7 @@
 
 dc_tree_node dc_tree_create_node(void * content) {
     dc_tree_node new_node = (dc_tree_node) dc_malloc(sizeof(struct dc_tree_node_s));
+    new_node->content = content;
     new_node->left = NULL;
     new_node->right = NULL;
     return new_node;
