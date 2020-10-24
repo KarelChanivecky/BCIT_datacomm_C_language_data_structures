@@ -4,22 +4,22 @@
  * A01052674
  *
  * BCIT CST
- * Set O Datacomm
+ * dlinked_set_value O Datacomm
  *
  * data_structures
  */
 
 #include <stdio.h>
-#include "../linked_list/dlinked_list.h"
+#include "../lib/dlinked_list.h"
 
-static void test_create_linked_list() {
-    dlinked_list l = create_linked_list();
+static void test_dlinked_create_list() {
+    dlinked_list * l = dlinked_create_list();
     if ( l && l->size == 0 && !l->head && !l->tail ) {
-        fprintf(stderr, "test_create_linked_list: Success\n" );
+        fprintf(stderr, "test_dlinked_create_list: Success\n" );
     } else {
-        fprintf(stderr, "test_create_linked_list: failure\n" );
+        fprintf(stderr, "test_dlinked_create_list: failure\n" );
     }
-    free_list(&l);
+    dlinked_free_list( &l );
 }
 
 static void test_result_of_passing_null_list_returns_void_ptr( void * (* func)( void *, void *, void * )) {
@@ -32,21 +32,21 @@ static void test_result_of_passing_null_list_returns_void_ptr( void * (* func)( 
 }
 
 static void test_result_of_passing_null_head_returns_void_ptr( void * (* func)( void *, void *, void * )) {
-    dlinked_list l = create_linked_list();
+    dlinked_list * l = dlinked_create_list();
     void * result = func( l, NULL, NULL );
     if ( result == NULL) {
         fprintf(stderr, "test_result_of_passing_null_head_returns_void_ptr: Success\n" );
     } else {
         fprintf(stderr, "test_result_of_passing_null_head_returns_void_ptr: failure\n" );
     }
-    free_list(&l);
+    dlinked_free_list( &l );
 }
 
 static void test_result_of_passing_out_of_bounds_returns_void_ptr(void * (* func)( void *, void *, void * )) {
-    dlinked_list l = create_linked_list();
-    push( l, NULL );
-    push( l, NULL );
-    push( l, NULL );
+    dlinked_list * l = dlinked_create_list();
+    dlinked_push( l, NULL );
+    dlinked_push( l, NULL );
+    dlinked_push( l, NULL );
     void * result_under_bound = func( l, -1, NULL );
     if ( result_under_bound == NULL) {
         fprintf(stderr, "test_result_of_passing_out_of_bounds_returns_void_ptr: Underbound success\n" );
@@ -59,7 +59,7 @@ static void test_result_of_passing_out_of_bounds_returns_void_ptr(void * (* func
     } else {
         fprintf(stderr, "test_result_of_passing_out_of_bounds_returns_void_ptr: overbound failure\n" );
     }
-    free_list( &l );
+    dlinked_free_list( &l );
 }
 
 static void test_result_of_passing_null_list_returns_numeric( void * (* func)( void *, void *, void * )) {
@@ -73,21 +73,21 @@ static void test_result_of_passing_null_list_returns_numeric( void * (* func)( v
 }
 
 static void test_result_of_passing_null_head_returns_numeric( void * (* func)( void *, void *, void * )) {
-    dlinked_list l = create_linked_list();
+    dlinked_list * l = dlinked_create_list();
     int result = func( l, NULL, NULL );
     if ( result == BAD_ARGS) {
         fprintf(stderr, "test_result_of_passing_null_head_returns_numeric:  success\n" );
     } else {
         fprintf(stderr, "test_result_of_passing_null_head_returns_numeric:  failure\n" );
     }
-    free_list( &l );
+    dlinked_free_list( &l );
 }
 
 static void test_result_of_passing_out_of_bounds_returns_numeric( void * (* func)( void *, void *, void * )) {
-    dlinked_list l = create_linked_list();
-    push( l, NULL );
-    push( l, NULL );
-    push( l, NULL );
+    dlinked_list * l = dlinked_create_list();
+    dlinked_push( l, NULL );
+    dlinked_push( l, NULL );
+    dlinked_push( l, NULL );
     int result_under_bound =  func( l, -1, NULL );
     if ( result_under_bound == OUT_OF_BOUND_ERR) {
         fprintf(stderr, "test_result_of_passing_out_of_bounds_returns_numeric: Underbound success\n" );
@@ -100,266 +100,304 @@ static void test_result_of_passing_out_of_bounds_returns_numeric( void * (* func
     } else {
         fprintf(stderr, "test_result_of_passing_out_of_bounds_returns_numeric: overbound failure\n" );
     }
-    free_list( &l );
+    dlinked_free_list( &l );
 }
 
-static void test_free_list() {
-    dlinked_list l = create_linked_list();
-    push(l, NULL);
-    free_list(&l);
+static void test_dlinked_free_list() {
+    dlinked_list * l = dlinked_create_list();
+    dlinked_push(l, NULL);
+    dlinked_free_list( &l );
     if ( l == NULL) {
-        fprintf(stderr, "test_free_list: success\n" );
+        fprintf(stderr, "test_dlinked_free_list: success\n" );
     } else {
-        fprintf(stderr, "test_free_list: failure\n" );
+        fprintf(stderr, "test_dlinked_free_list: failure\n" );
     }
 }
 
-static void test_push( ) {
-    test_result_of_passing_null_list_returns_numeric(( void * ( * )( void *, void *, void * )) push );
-    dlinked_list l = create_linked_list();
-    push(l, NULL);
+static void test_dlinked_push( ) {
+    test_result_of_passing_null_list_returns_numeric(( void * ( * )( void *, void *, void * )) dlinked_push );
+    dlinked_list * l = dlinked_create_list();
+    dlinked_push(l, NULL);
     if (l->size == 1 && l->head && l->tail && l->head == l->tail) {
-        fprintf(stderr, "test_push: success\n" );
+        fprintf(stderr, "test_dlinked_push: success\n" );
     } else {
-        fprintf(stderr, "test_push: failure\n" );
+        fprintf(stderr, "test_dlinked_push: failure\n" );
     }
-    free_list(&l);
+    dlinked_free_list( &l );
 }
 
 // pass null, pass null head, pass not null head
-static void test_push_head( ) {
-    test_result_of_passing_null_list_returns_numeric(( void * ( * )( void *, void *, void * )) push_head );
-    dlinked_list l = create_linked_list();
-    push_head(l, NULL);
+static void test_dlinked_push_head( ) {
+    test_result_of_passing_null_list_returns_numeric(( void * ( * )( void *, void *, void * )) dlinked_push_head );
+    dlinked_list * l = dlinked_create_list();
+    dlinked_push_head(l, NULL);
     if ( ! (l->size == 1 && l->head && l->tail && l->head == l->tail)) {
-        fprintf(stderr, "test_push_head 1: failure\n" );
+        fprintf(stderr, "test_dlinked_push_head 1: failure\n" );
     }
-    push_head(l, 1);
+    dlinked_push_head(l, 1);
     if (l->head != l->tail && l->size == 2 && l->head->content == 1) {
-        fprintf(stderr, "test_push_head: success\n" );
+        fprintf(stderr, "test_dlinked_push_head: success\n" );
     } else {
-        fprintf(stderr, "test_push_head 2: failure\n" );
+        fprintf(stderr, "test_dlinked_push_head 2: failure\n" );
     }
-    free_list(&l);
+    dlinked_free_list( &l );
 }
 
 // pass null, pass null head, pass size 1, pass size 2
 static void test_pop_head( ) {
-    test_result_of_passing_null_list_returns_void_ptr(( void * ( * )( void *, void *, void * )) pop_head );
-    test_result_of_passing_null_head_returns_void_ptr(( void * ( * )( void *, void *, void * )) pop_head );
-    dlinked_list l = create_linked_list();
-    push_head(l, NULL);
-    pop_head(l);
+    test_result_of_passing_null_list_returns_void_ptr(( void * ( * )( void *, void *, void * )) dlinked_pop_head );
+    test_result_of_passing_null_head_returns_void_ptr(( void * ( * )( void *, void *, void * )) dlinked_pop_head );
+    dlinked_list * l = dlinked_create_list();
+    dlinked_push_head(l, NULL);
+    dlinked_pop_head(l);
     if ( ! (l->size == 0 && !l->head && !l->tail )) {
         fprintf(stderr, "test_pop_head 1: failure\n" );
     }
-    push_head(l, 1);
-    push_head(l, 2);
-    pop_head(l);
+    dlinked_push_head(l, 1);
+    dlinked_push_head(l, 2);
+    dlinked_pop_head(l);
     if (l->size == 1 && l->head && l->tail && l->head == l->tail && l->head->content == 1) {
         fprintf(stderr, "test_pop_head: success\n" );
     } else {
         fprintf(stderr, "test_pop_head 2: failure\n" );
     }
-    free_list(&l);
+    dlinked_free_list( &l );
 }
 
-void test_pop_tail() {
-    test_result_of_passing_null_list_returns_void_ptr(( void * ( * )( void *, void *, void * )) pop_tail );
-    test_result_of_passing_null_head_returns_void_ptr(( void * ( * )( void *, void *, void * )) pop_tail );
-    dlinked_list l = create_linked_list();
-    push_head(l, NULL);
-    pop_tail(l);
+void test_dlinked_pop_tail() {
+    test_result_of_passing_null_list_returns_void_ptr(( void * ( * )( void *, void *, void * )) dlinked_pop_tail );
+    test_result_of_passing_null_head_returns_void_ptr(( void * ( * )( void *, void *, void * )) dlinked_pop_tail );
+    dlinked_list * l = dlinked_create_list();
+    dlinked_push_head(l, NULL);
+    dlinked_pop_tail(l);
     if ( ! (l->size == 0 && !l->head && !l->tail )) {
-        fprintf(stderr, "test_pop_tail 1: failure\n" );
+        fprintf(stderr, "test_dlinked_pop_tail 1: failure\n" );
     }
-    push_head(l, 2);
-    push_head(l, 1);
-    pop_tail(l);
+    dlinked_push_head(l, 2);
+    dlinked_push_head(l, 1);
+    dlinked_pop_tail(l);
     if (l->size == 1 && l->head && l->tail && l->head == l->tail && l->head->content == 1) {
-        fprintf(stderr, "test_pop_tail: success\n" );
+        fprintf(stderr, "test_dlinked_pop_tail: success\n" );
     } else {
-        fprintf(stderr, "test_pop_tail 2: failure\n" );
+        fprintf(stderr, "test_dlinked_pop_tail 2: failure\n" );
     }
-    free_list(&l);
+    dlinked_free_list( &l );
 }
 
 // pass null, pass null head, pass size 1
-void test_peek_tail( ) {
-    test_result_of_passing_null_list_returns_void_ptr(( void * ( * )( void *, void *, void * )) peek_tail );
-    test_result_of_passing_null_head_returns_void_ptr(( void * ( * )( void *, void *, void * )) peek_tail );
-    dlinked_list l = create_linked_list();
-    push_head(l, 2);
-    if (peek_tail(l) == 2) {
-        fprintf(stderr, "test_peek_tail 1: success\n" );
+void test_dlinked_peek_tail( ) {
+    test_result_of_passing_null_list_returns_void_ptr(( void * ( * )( void *, void *, void * )) dlinked_peek_tail );
+    test_result_of_passing_null_head_returns_void_ptr(( void * ( * )( void *, void *, void * )) dlinked_peek_tail );
+    dlinked_list * l = dlinked_create_list();
+    dlinked_push_head(l, 2);
+    if (dlinked_peek_tail(l) == 2) {
+        fprintf(stderr, "test_dlinked_peek_tail 1: success\n" );
     } else {
-        fprintf(stderr, "test_peek_tail 1: failure\n" );
+        fprintf(stderr, "test_dlinked_peek_tail 1: failure\n" );
     }
-    push(l, NULL);
-    push(l, 1);
-    if (peek_tail(l) == 1) {
-        fprintf(stderr, "test_peek_tail 2: success\n" );
+    dlinked_push(l, NULL);
+    dlinked_push(l, 1);
+    if (dlinked_peek_tail(l) == 1) {
+        fprintf(stderr, "test_dlinked_peek_tail 2: success\n" );
     } else {
-        fprintf(stderr, "test_peek_tail 2: failure\n" );
+        fprintf(stderr, "test_dlinked_peek_tail 2: failure\n" );
     }
-    free_list(&l);
+    dlinked_free_list( &l );
 }
 
-// pass null, pass null head, pass size 1, pass size 10, get first, center, last, out of bounds
-void test_get( ) {
-    test_result_of_passing_null_list_returns_void_ptr(( void * ( * )( void *, void *, void * )) get );
-    test_result_of_passing_null_head_returns_void_ptr(( void * ( * )( void *, void *, void * )) get );
-    test_result_of_passing_out_of_bounds_returns_void_ptr(( void * ( * )( void *, void *, void * )) get );
-    dlinked_list l = create_linked_list();
-    push_head(l, 2);
-    if (get(l, 0) == 2) {
-        fprintf(stderr, "test_get 1: success\n" );
+// pass null, pass null head, pass size 1, pass size 10, dlinked_get_value first, center, last, out of bounds
+void test_dlinked_get_value( ) {
+    test_result_of_passing_null_list_returns_void_ptr(( void * ( * )( void *, void *, void * )) dlinked_get_value );
+    test_result_of_passing_null_head_returns_void_ptr(( void * ( * )( void *, void *, void * )) dlinked_get_value );
+    test_result_of_passing_out_of_bounds_returns_void_ptr(( void * ( * )( void *, void *, void * )) dlinked_get_value );
+    dlinked_list * l = dlinked_create_list();
+    dlinked_push_head(l, 2);
+    if (dlinked_get_value(l, 0) == 2) {
+        fprintf(stderr, "test_dlinked_get_value 1: success\n" );
     } else {
-        fprintf(stderr, "test_get 1: failure\n" );
+        fprintf(stderr, "test_dlinked_get_value 1: failure\n" );
     }
-    push(l, NULL);
-    push(l, 1);
-    if (get(l, 2) == 1 && get(l, 1) == NULL) {
-        fprintf(stderr, "test_get 2: success\n" );
+    dlinked_push(l, NULL);
+    dlinked_push(l, 1);
+    if (dlinked_get_value(l, 2) == 1 && dlinked_get_value(l, 1) == NULL) {
+        fprintf(stderr, "test_dlinked_get_value 2: success\n" );
     } else {
-        fprintf(stderr, "test_get 2: failure\n" );
+        fprintf(stderr, "test_dlinked_get_value 2: failure\n" );
     }
-    free_list(&l);
+    dlinked_free_list( &l );
 }
 
 // pass null, pass null head, pass size 1, pass size 10, remove first, center, last, out of bounds
-void test_extract( ) {
-    test_result_of_passing_null_list_returns_void_ptr(( void * ( * )( void *, void *, void * )) extract );
-    test_result_of_passing_null_head_returns_void_ptr(( void * ( * )( void *, void *, void * )) extract );
-    test_result_of_passing_out_of_bounds_returns_void_ptr(( void * ( * )( void *, void *, void * )) extract );
-    dlinked_list l = create_linked_list();
-    push_head(l, 2);
-    if (extract(l, 0) == 2) {
-        fprintf(stderr, "test_extract 1: success\n" );
+void test_dlinked_extract_value( ) {
+    test_result_of_passing_null_list_returns_void_ptr(( void * ( * )( void *, void *, void * )) dlinked_extract_value );
+    test_result_of_passing_null_head_returns_void_ptr(( void * ( * )( void *, void *, void * )) dlinked_extract_value );
+    test_result_of_passing_out_of_bounds_returns_void_ptr(( void * ( * )( void *, void *, void * )) dlinked_extract_value );
+    dlinked_list * l = dlinked_create_list();
+    dlinked_push_head(l, 2);
+    if (dlinked_extract_value(l, 0) == 2) {
+        fprintf(stderr, "test_dlinked_extract_value 1: success\n" );
     } else {
-        fprintf(stderr, "test_extract 1: failure\n" );
+        fprintf(stderr, "test_dlinked_extract_value 1: failure\n" );
     }
-    push(l, NULL);
-    push(l, 1);
-    push(l, 2);
-    push(l, 3);
-    push(l, 4);
-    int res1 = extract(l, 2);
-    int res2 = extract(l, 3);
+    dlinked_push(l, NULL);
+    dlinked_push(l, 1);
+    dlinked_push(l, 2);
+    dlinked_push(l, 3);
+    dlinked_push(l, 4);
+    int res1 = dlinked_extract_value(l, 2);
+    int res2 = dlinked_extract_value(l, 3);
     if ( res1 == 2 && res2 == 4) {
-        fprintf(stderr, "test_extract 2: success\n" );
+        fprintf(stderr, "test_dlinked_extract_value 2: success\n" );
     } else {
-        fprintf(stderr, "test_extract 2: failure\n" );
+        fprintf(stderr, "test_dlinked_extract_value 2: failure\n" );
     }
-    free_list(&l);
+    dlinked_free_list( &l );
 }
 
 // pass null, pass null head, pass size 1, pass size 10, remove first, center, last, out of bounds
-void test_insert( ) {
-    test_result_of_passing_null_list_returns_numeric(( void * ( * )( void *, void *, void * )) insert );
-    test_result_of_passing_out_of_bounds_returns_numeric(( void * ( * )( void *, void *, void * )) insert );
-    dlinked_list l = create_linked_list();
-    if (insert(l, 0, 1) == SUCCESS && l->head->prev == NULL) {
-        fprintf(stderr, "test_insert 1: success\n" );
+void test_dlinked_insert_value( ) {
+    test_result_of_passing_null_list_returns_numeric(( void * ( * )( void *, void *, void * )) dlinked_insert_value );
+    test_result_of_passing_out_of_bounds_returns_numeric(( void * ( * )( void *, void *, void * )) dlinked_insert_value );
+    dlinked_list * l = dlinked_create_list();
+    if (dlinked_insert_value(l, 0, 1) == SUCCESS && l->head->prev == NULL) {
+        fprintf(stderr, "test_dlinked_insert_value 1: success\n" );
     } else {
-        fprintf(stderr, "test_insert 1: failure\n" );
+        fprintf(stderr, "test_dlinked_insert_value 1: failure\n" );
     }
-    if (insert(l, 0, NULL) == SUCCESS
-    && insert(l, 1, 2) == SUCCESS
-    && insert(l, 1, 3) == SUCCESS) {
-        fprintf(stderr, "test_insert 2: success\n" );
+    if (dlinked_insert_value(l, 0, NULL) == SUCCESS
+    && dlinked_insert_value(l, 1, 2) == SUCCESS
+    && dlinked_insert_value(l, 1, 3) == SUCCESS) {
+        fprintf(stderr, "test_dlinked_insert_value 2: success\n" );
     } else {
-        fprintf(stderr, "test_insert 2: failure\n" );
+        fprintf(stderr, "test_dlinked_insert_value 2: failure\n" );
 
     }
-    if (get(l, 0) == NULL
-    && get(l, 3) == 1
-    && get(l, 1) == 3
+    if (dlinked_get_value(l, 0) == NULL
+    && dlinked_get_value(l, 3) == 1
+    && dlinked_get_value(l, 1) == 3
     && l->tail->next == NULL
     && l->size == 4) {
-        fprintf(stderr, "test_insert 3: success\n" );
+        fprintf(stderr, "test_dlinked_insert_value 3: success\n" );
     } else {
-        fprintf(stderr, "test_insert 3: failure\n" );
+        fprintf(stderr, "test_dlinked_insert_value 3: failure\n" );
     }
-    free_list(&l);
+    dlinked_free_list( &l );
 }
 
 
-void test_set( ) {
-    test_result_of_passing_null_list_returns_numeric(( void * ( * )( void *, void *, void * )) set );
-    test_result_of_passing_null_head_returns_numeric(( void * ( * )( void *, void *, void * )) set );
-    test_result_of_passing_out_of_bounds_returns_numeric(( void * ( * )( void *, void *, void * )) set );
-    dlinked_list l = create_linked_list();
-    push_head(l, 2);
-    if (set(l, 0, 2) == SUCCESS && l->head->prev == NULL) {
-        fprintf(stderr, "test_set 1: success\n" );
+void test_dlinked_set_value( ) {
+    test_result_of_passing_null_list_returns_numeric(( void * ( * )( void *, void *, void * )) dlinked_set_value );
+    test_result_of_passing_null_head_returns_numeric(( void * ( * )( void *, void *, void * )) dlinked_set_value );
+    test_result_of_passing_out_of_bounds_returns_numeric(( void * ( * )( void *, void *, void * )) dlinked_set_value );
+    dlinked_list * l = dlinked_create_list();
+    dlinked_push_head(l, 2);
+    if (dlinked_set_value(l, 0, 2) == SUCCESS && l->head->prev == NULL) {
+        fprintf(stderr, "test_dlinked_set_value 1: success\n" );
     } else {
-        fprintf(stderr, "test_set 1: failure\n" );
+        fprintf(stderr, "test_dlinked_set_value 1: failure\n" );
     }
-    push(l, NULL);
-    push(l, 1);
-    push(l, 2);
-    push(l, 3);
-    push(l, 4);
-    int res1 = set(l, 2, 5);
-    int res2 = set(l, 5, 6);
+    dlinked_push(l, NULL);
+    dlinked_push(l, 1);
+    dlinked_push(l, 2);
+    dlinked_push(l, 3);
+    dlinked_push(l, 4);
+    int res1 = dlinked_set_value(l, 2, 5);
+    int res2 = dlinked_set_value(l, 5, 6);
     if ( res1 == SUCCESS
     && res2 == SUCCESS
-    && get(l, 2) == 5
-    && get(l, 5) == 6
+    && dlinked_get_value(l, 2) == 5
+    && dlinked_get_value(l, 5) == 6
     && l->size == 6
     && l->tail->next == NULL) {
-        fprintf(stderr, "test_set 2: success\n" );
+        fprintf(stderr, "test_dlinked_set_value 2: success\n" );
     } else {
-        fprintf(stderr, "test_set 2: failure\n" );
+        fprintf(stderr, "test_dlinked_set_value 2: failure\n" );
     }
-    free_list(&l);
+    dlinked_free_list( &l );
 }
 
 int comparator(void * lhs, void * rhs) {
     return lhs == rhs;
 }
 
-void test_index_of( ) {
-    int status1;
-    if (index_of(NULL, NULL, NULL, &status1) == 0 &&
-    status1 == BAD_ARGS) {
-        fprintf(stderr, "test_index_of 1: success\n" );
+void test_dlinked_index_of_value( ) {
+    int index1 = 0;
+    if ( dlinked_index_of_value(NULL, NULL, NULL, &index1) == BAD_ARGS &&
+         index1 == 0) {
+        fprintf(stderr, "test_dlinked_index_of_value 1: success\n" );
     } else {
-        fprintf(stderr, "test_index_of 1: failure\n" );
+        fprintf(stderr, "test_dlinked_index_of_value 1: failure\n" );
     }
-    int status2;
-    dlinked_list l = create_linked_list();
-    if (index_of(NULL, 1, comparator, &status2) == 0 &&
-        status2 == BAD_ARGS) {
-        fprintf(stderr, "test_index_of 2: success\n" );
+
+
+    int index2= 0;
+    dlinked_list * l = dlinked_create_list();
+    if ( dlinked_index_of_value(l, 1, comparator, &index2) == FAILURE &&
+         index2 == 0) {
+        fprintf(stderr, "test_dlinked_index_of_value 2: success\n" );
     } else {
-        fprintf(stderr, "test_index_of 2: failure\n" );
+        fprintf(stderr, "test_dlinked_index_of_value 2: failure\n" );
     }
-    push(l, 1);
-    push(l, 2);
-    int status3;
-    if (index_of(l, 2, comparator, &status3) == 1
-    && status3 == SUCCESS) {
-        fprintf(stderr, "test_index_of 3: success\n" );
+    dlinked_push(l, 1);
+    dlinked_push(l, 2);
+    size_t index3 = 0;
+    if (dlinked_index_of_value(l, 2, comparator, &index3) == SUCCESS
+    && index3 == 1) {
+        fprintf(stderr, "test_dlinked_index_of_value 3: success\n" );
     } else {
-        fprintf(stderr, "test_index_of 3: failure\n" );
+        fprintf(stderr, "test_dlinked_index_of_value 3: failure\n" );
     }
-    free_list(&l);
+    dlinked_free_list( &l );
 }
 
+int size_comparator(void * lhs, void * rhs) {
+    if (lhs < rhs) {
+        return LHS_SMALLER;
+    }
+    if (lhs > rhs) {
+        return LHS_LARGER;
+    }
+    return LHS_EQUAL;
+}
+
+void test_sort( ) {
+    dlinked_list * list = dlinked_create_list();
+    dlinked_push(list, 3);
+    dlinked_push(list, 1);
+    dlinked_push(list, 8);
+    dlinked_push(list, 8);
+    dlinked_push(list, 0);
+    dlinked_push(list, 8);
+    dlinked_push(list, 3);
+    dlinked_push(list, 10);
+    dlinked_list * sorted = dlinked_quicksort(list, size_comparator);
+    size_t result_arr[] = {0, 1, 3, 3, 8, 8, 8, 10};
+    int all_good = 1;
+    for (int i = 0; i < 8; i++) {
+        size_t el = (size_t) dlinked_pop_head(sorted);
+        if (el != result_arr[i]) {
+            fprintf(stderr, "sorting failure\nexpected: %zu\ngot: %zu\n", result_arr[i], el);
+            all_good = 0;
+        }
+    }
+    if (all_good) {
+        fprintf(stderr, "sorting all good\n");
+    }
+}
 
 int main() {
-    test_free_list();
-    test_push();
-    test_push_head();
+    test_dlinked_free_list();
+    test_dlinked_push();
+    test_dlinked_push_head();
     test_pop_head();
-    test_pop_tail();
-    test_peek_tail();
-    test_get();
-    test_extract();
-    test_insert();
-    test_set();
-    test_index_of();
+    test_dlinked_pop_tail();
+    test_dlinked_peek_tail();
+    test_dlinked_get_value();
+    test_dlinked_extract_value();
+    test_dlinked_insert_value();
+    test_dlinked_set_value();
+    test_dlinked_index_of_value();
+    test_sort();
+    fprintf(stderr, "all tests are done\n");
     return 0;
 }
