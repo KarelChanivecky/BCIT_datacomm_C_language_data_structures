@@ -117,7 +117,7 @@ void * dlinked_extract_value( dlinked_list list, size_t index );
  * @param content the content to dlinked_insert_value
  * @return SUCCESS or one of the defined error codes
  */
-int dlinked_insert_value( dlinked_list list, size_t index, void * content);
+int dlinked_insert_value( dlinked_list list, size_t index, void * content );
 
 /**
  * Set the given content at the given index.
@@ -127,18 +127,16 @@ int dlinked_insert_value( dlinked_list list, size_t index, void * content);
 int dlinked_set_value( dlinked_list list, size_t index, void * content );
 
 /**
- * Get the index of a given element.
+ * Get the result of a given element.
  * @param list the list to search in
  * @param key the element to seek
  * @param comparator a predicate function
- * @param result_code will be assigned: <br/>
- * if key is found, success<br/>
+ * @param result if key is contained, the result, else ignore
+ * @return if key is found, success<br/>
  * if not found, FAILURE<br/>
  * if error occurred, one of the defined error codes
- * @return if key is contained, the index, if not found or error 0.
  */
-size_t dlinked_index_of_value( dlinked_list list, void * key, int(*comparator)( void *, void *), int * result_code);
-
+int dlinked_index_of_value( dlinked_list list, void * key, int(* comparator)( void *, void * ), size_t * result );
 
 
 #endif // DC_DLINKED_LIST_H

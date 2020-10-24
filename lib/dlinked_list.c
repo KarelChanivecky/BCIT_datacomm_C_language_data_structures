@@ -64,8 +64,8 @@ static dlink create_link_with_next_and_prev( void * content, dlink prev, dlink n
  * @param index must be such as 0 <= index < size
  * @return the link specified by index. NULL if out of bounds
  */
-static dlink get_link(dlink head, size_t index) {
-    while (head && index--) {
+static dlink get_link( dlink head, size_t index ) {
+    while ( head && index-- ) {
         head = head->next;
     }
     return head;
@@ -85,7 +85,7 @@ static void free_heads( dlink h ) {
 }
 
 void free_list( dlinked_list * list ) {
-    if (!list || !(*list)) {
+    if ( !list || !( *list )) {
         return;
     }
     free_heads(( *list )->head );
@@ -142,15 +142,15 @@ int dlinked_push( dlinked_list list, void * content ) {
 }
 
 int dlinked_push_head( dlinked_list list, void * content ) {
-    if (!list) {
+    if ( !list ) {
         return BAD_ARGS;
     }
-    dlink l = create_link_with_next(content, list->head);
-    if (!l) {
+    dlink l = create_link_with_next( content, list->head );
+    if ( !l ) {
         return MALLOC_ERR;
     }
     list->head = l;
-    if (l->next) {
+    if ( l->next ) {
         l->next->prev = l;
     } else {
         list->tail = l;
@@ -165,7 +165,7 @@ void * dlinked_pop_head( dlinked_list list ) {
     }
     dlink h = list->head;
     list->head = h->next;
-    if (list->head) {
+    if ( list->head ) {
         list->head->prev = NULL;
     } else {
         list->tail = NULL;
@@ -177,11 +177,11 @@ void * dlinked_pop_head( dlinked_list list ) {
 }
 
 void * dlinked_pop_tail( dlinked_list list ) {
-    if (!list || !list->tail) {
+    if ( !list || !list->tail ) {
         return NULL;
     }
     dlink tail = list->tail;
-    if (!tail->prev) {
+    if ( !tail->prev ) {
         list->head = NULL;
         list->tail = NULL;
     } else {
@@ -190,66 +190,66 @@ void * dlinked_pop_tail( dlinked_list list ) {
         tail->next = NULL;
     }
     void * content = tail->content;
-    free(tail);
+    free( tail );
     list->size--;
     return content;
 }
 
 void * dlinked_peek_tail( dlinked_list list ) {
-    if (!list || !list->tail) {
+    if ( !list || !list->tail ) {
         return NULL;
     }
     return list->tail->content;
-};
+}
 
 void * dlinked_get_value( dlinked_list list, size_t index ) {
-    if (!list || index < 0 || list->size <= index ) {
+    if ( !list || list->size <= index ) {
         return NULL;
     }
-    dlink l = get_link(list->head, index);
-    if (l) {
+    dlink l = get_link( list->head, index );
+    if ( l ) {
         return l->content;
     }
     return NULL;
 }
 
 void * dlinked_extract_value( dlinked_list list, size_t index ) {
-    if (!list || index < 0 || list->size <= index ) {
+    if ( !list || list->size <= index ) {
         return NULL;
     }
-    dlink l = get_link(list->head, index);
-    if (!l) {
+    dlink l = get_link( list->head, index );
+    if ( !l ) {
         return NULL;
     }
-    if (l->prev) {
+    if ( l->prev ) {
         l->prev->next = l->next;
     }
-    if (l->next) {
+    if ( l->next ) {
         l->next->prev = l->prev;
     }
     list->size--;
     void * content = l->content;
-    free(l);
+    free( l );
     return content;
 }
 
-int dlinked_insert_value( dlinked_list list, size_t index, void * content) {
-    if (!list ) {
+int dlinked_insert_value( dlinked_list list, size_t index, void * content ) {
+    if ( !list ) {
         return BAD_ARGS;
     }
-    if (!list->head || index == 0) {
+    if ( !list->head || index == 0 ) {
         return dlinked_push_head( list, content );
     }
-    dlink to_move = get_link( list->head, index);
-    if (!to_move) {
+    dlink to_move = get_link( list->head, index );
+    if ( !to_move ) {
         return OUT_OF_BOUND_ERR;
     }
-    dlink to_insert = create_link_with_next_and_prev(content, to_move->prev, to_move);
-    if (!to_insert) {
+    dlink to_insert = create_link_with_next_and_prev( content, to_move->prev, to_move );
+    if ( !to_insert ) {
         return MALLOC_ERR;
     }
-    if (to_move->prev) {
-       to_move->prev->next = to_insert;
+    if ( to_move->prev ) {
+        to_move->prev->next = to_insert;
     }
     to_move->prev = to_insert;
     list->size++;
@@ -260,31 +260,29 @@ int dlinked_set_value( dlinked_list list, size_t index, void * content ) {
     if ( !list || !list->head ) {
         return BAD_ARGS;
     }
-    dlink l = get_link(list->head, index);
-    if (!l) {
+    dlink l = get_link( list->head, index );
+    if ( !l ) {
         return OUT_OF_BOUND_ERR;
     }
     l->content = content;
     return SUCCESS;
 }
 
-size_t dlinked_index_of_value( dlinked_list list, void * key, int(*comparator)( void *, void *), int * result_code) {
-    if (!list || !key || !comparator) {
-        *result_code = BAD_ARGS;
-        return 0;
+int dlinked_index_of_value( dlinked_list list, void * key, int(* comparator)( void *, void * ), size_t * result ) {
+    if ( !list || !key || !comparator ) {
+        return BAD_ARGS;
     }
     size_t index = 0;
     dlink l = list->head;
-    while (l) {
-        if (comparator(l->content, key)) {
-            *result_code = SUCCESS;
-            return index;
+    while ( l ) {
+        if ( comparator( l->content, key )) {
+            *result = index;
+            return SUCCESS;
         }
         l = l->next;
         index++;
     }
-    *result_code = FAILURE;
-    return 0;
+    return FAILURE;
 }
 
 
