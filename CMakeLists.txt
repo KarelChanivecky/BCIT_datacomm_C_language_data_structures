@@ -10,4 +10,4 @@ target_compile_options(dc_utils PRIVATE -Wpedantic -Wall -Wextra -fPIC)
 
 
 install(TARGETS dc_utils DESTINATION lib)
-install(FILES lib/bit_array.h lib/dlinked_list.h lib/dc_tree.c lib/dc_tree.h DESTINATION include/dc_utils)
+install(FILES lib/bit_array.h lib/dlinked_list.h lib/dc_tree.h DESTINATION include/dc_utils)
