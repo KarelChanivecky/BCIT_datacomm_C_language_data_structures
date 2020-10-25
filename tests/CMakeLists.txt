@@ -10,3 +10,6 @@ target_compile_options(dc_utils PRIVATE -Wpedantic -Wall -Wextra -fPIC)
 
 add_executable(test_dlinked_list test_dlink.c)
 target_link_libraries(test_dlinked_list dc_utils)
+
+add_executable(test_bit_array test_bit_array.c )
+target_link_libraries(test_bit_array dc_utils)
