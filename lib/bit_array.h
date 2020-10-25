@@ -11,7 +11,7 @@
 #define OPERATION_FAIL      -1
 
 /**
- * Array of bits of static size. Size is dlinked_set_value when bit_array is initialized.
+ * Dynamic array of bits. Size is bit_length when bit_array is initialized.
  * The bits are added left to right.
  *
  * Example: you create bit_array with minimum capacity of 16 bits
@@ -74,14 +74,14 @@ uint8_t bit_array_check_byte( bit_array this, size_t index );
 /**
  * Adds a new bit to the array specified by bit_value param. This will increase
  * the bit_length of the array by 1. If bit_length of the array exceeds bit_capacity,
- * new bit will not be added an an error will be printed to stderr.
+ * the capacity will be doubled to make room.
  */
 int bit_array_add_bit( bit_array this, bool bit_value );
 
 /**
  * Adds 8 bits to the array specified by bit_value param. This will increase
  * the bit_length of the array by 8. If new bit_length of the array exceeds bit_capacity,
- * new bits will not be added an an error will be printed to stderr.
+ * the capacity will be doubled to make room.
  */
 int bit_array_add_byte( bit_array this, uint8_t byte_value );
 

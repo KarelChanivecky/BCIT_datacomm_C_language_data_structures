@@ -93,8 +93,11 @@ uint8_t bit_array_check_byte( bit_array this, size_t index ) {
 
 int bit_array_add_bit( bit_array this, bool bit_value ) {
     if ( this->bit_length >= this->bit_capacity ) {
-        if ( this->enable_error_logs ) fprintf( stderr, "bit_array_add_bit: byte_array capacity reached.\n" );
-        return OPERATION_FAIL;
+        this->bit_capacity = ( this->bit_capacity ) * 2;
+        size_t byte_capacity = this->bit_capacity / BYTE;
+        uint8_t * ptr = realloc( this->array, byte_capacity * sizeof( uint8_t ));
+        if (ptr == NULL) return OPERATION_FAIL;
+        else this->array = ptr;
     }
 
     if ( bit_value ) {
@@ -127,11 +130,6 @@ int bit_array_pop_bit( bit_array this ) {
 }
 
 int bit_array_add_byte( bit_array this, uint8_t byte_value ) {
-    if (( this->bit_length + BYTE ) > this->bit_capacity ) {
-        if ( this->enable_error_logs ) fprintf( stderr, "bit_array_add_byte: byte_array capacity reached.\n" );
-        return OPERATION_FAIL;
-    }
-
     bit_array_add_bit( this, get_bit_value( byte_value, MASK_10000000 ));
     bit_array_add_bit( this, get_bit_value( byte_value, MASK_01000000 ));
     bit_array_add_bit( this, get_bit_value( byte_value, MASK_00100000 ));
