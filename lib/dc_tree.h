@@ -62,6 +62,13 @@ size_t dc_tree_height( dc_tree_node * tree );
 size_t dc_tree_size( dc_tree_node * tree );
 
 /**
+ * Tell if a tree node is a leaf.
+ * @param tree
+ * @return true if both children are null, else false
+ */
+int dc_tree_is_leaf( dc_tree_node * tree );
+
+/**
  * Apply func to all elements in tree in preorder manner.
  * @param tree
  * @param func a function pointer. The node's content will be passed as the first parameter. func_args as the second
