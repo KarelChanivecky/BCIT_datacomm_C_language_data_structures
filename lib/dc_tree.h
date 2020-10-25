@@ -56,5 +56,11 @@ void dc_tree_add_right(dc_tree_node  * tree, void * content);
  */
 size_t dc_tree_height(dc_tree_node  * tree);
 
+/**
+ * Apply func to all elements in tree in preorder manner.
+ * @param tree
+ * @param func a function pointer. The node's content will be passed as the first parameter. func_args as the second
+ */
+void dc_tree_map( dc_tree_node * tree, void func( void * el, void * args), void * func_args);
 
 #endif //ASSIGNMENT3_DC_TREE_H

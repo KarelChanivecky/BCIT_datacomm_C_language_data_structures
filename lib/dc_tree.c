@@ -40,3 +40,12 @@ size_t dc_tree_height( dc_tree_node  * tree ) {
     }
     return dc_tree_height(tree->left) + dc_tree_height(tree->right) + 1;
 }
+
+void dc_tree_map( dc_tree_node * tree, void func( void *, void * ), void * func_args) {
+    if (!tree) {
+        return;
+    }
+    func(tree->content, func_args);
+    dc_tree_map(tree->left, func, func_args);
+    dc_tree_map(tree->right, func, func_args);
+}
