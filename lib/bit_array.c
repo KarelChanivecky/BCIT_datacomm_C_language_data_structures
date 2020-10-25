@@ -95,8 +95,9 @@ int bit_array_add_bit( bit_array this, bool bit_value ) {
     if ( this->bit_length >= this->bit_capacity ) {
         this->bit_capacity = ( this->bit_capacity ) * 2;
         size_t byte_capacity = this->bit_capacity / BYTE;
-        this->array = realloc( this->array, byte_capacity * sizeof( uint8_t ));
-        if ( this->array == NULL) return OPERATION_FAIL;
+        uint8_t * ptr = realloc( this->array, byte_capacity * sizeof( uint8_t ));
+        if (ptr == NULL) return OPERATION_FAIL;
+        else this->array = ptr;
     }
 
     if ( bit_value ) {
