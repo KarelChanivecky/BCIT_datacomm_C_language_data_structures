@@ -24,7 +24,7 @@ typedef struct dc_tree_node_s dc_tree_node;
  * @param content
  * @return
  */
-dc_tree_node  * dc_tree_create_node(void * content);
+dc_tree_node * dc_tree_create_node( void * content );
 
 /**
  * Recursively free all children of the given node.
@@ -35,32 +35,37 @@ dc_tree_node  * dc_tree_create_node(void * content);
  * @param node parent node of the branch to free. Will be fred and nullified
  * @return the number of nodes removed
  */
-size_t dc_tree_free_branch( dc_tree_node  * * node);
+size_t dc_tree_free_branch( dc_tree_node ** node );
 
 /**
  * Add a new node to the left branch.
  * @param content the content of the new node
  */
-void dc_tree_add_left(dc_tree_node  * tree, void * content);
+void dc_tree_add_left( dc_tree_node * tree, void * content );
 
 /**
  * Add a new node to the right branch.
  * @param content the content of the new node
  */
-void dc_tree_add_right(dc_tree_node  * tree, void * content);
+void dc_tree_add_right( dc_tree_node * tree, void * content );
 
 /**
  * Evaluate the height of the tree.
  * @param tree
  * @return the height of the tree
  */
-size_t dc_tree_height(dc_tree_node  * tree);
+size_t dc_tree_height( dc_tree_node * tree );
+
+/**
+ * Get the number of nodes in the tree.
+ */
+size_t dc_tree_size( dc_tree_node * tree );
 
 /**
  * Apply func to all elements in tree in preorder manner.
  * @param tree
  * @param func a function pointer. The node's content will be passed as the first parameter. func_args as the second
  */
-void dc_tree_map( dc_tree_node * tree, void func( void * el, void * args), void * func_args);
+void dc_tree_map( dc_tree_node * tree, void func( void * el, void * args ), void * func_args );
 
 #endif //ASSIGNMENT3_DC_TREE_H
