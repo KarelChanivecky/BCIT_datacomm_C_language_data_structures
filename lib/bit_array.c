@@ -64,7 +64,7 @@ void bit_array_set_logging( bit_array * this, bool enable_logging ) {
     this->enable_error_logs = enable_logging;
 }
 
-bool bit_array_check_bit( bit_array * this, size_t index ) {
+int bit_array_check_bit( bit_array * this, size_t index ) {
     if ( index >= this->bit_length ) {
         if ( this->enable_error_logs ) fprintf( stderr, "bit_array_set_bit: index out of bounds.\n" );
         return OPERATION_FAIL;
@@ -140,4 +140,33 @@ int bit_array_add_byte( bit_array * this, uint8_t byte_value ) {
     bit_array_add_bit( this, get_bit_value( byte_value, MASK_00000001 ));
 
     return OPERATION_SUCCESS;
+}
+
+bit_array * bit_array_combine(bit_array * this, bit_array * other) {
+    bit_array * combined = bit_array_create();
+    bit_array_init(combined, 8);
+
+    for (size_t i = 0; i < this->bit_length; i++) {
+        int bit = bit_array_check_bit(this, i);
+        bit_array_add_bit(combined, bit);
+    }
+
+    for (size_t i = 0; i < other->bit_length; i++) {
+        int bit = bit_array_check_bit(this, i);
+        bit_array_add_bit(combined, bit);
+    }
+
+    return combined;
+}
+
+bit_array * bit_array_clone(bit_array * this) {
+    bit_array * copy = bit_array_create();
+    bit_array_init(copy, 8);
+
+    for (size_t i = 0; i < this->bit_length; i++) {
+        int bit = bit_array_check_bit(this, i);
+        bit_array_add_bit(copy, bit);
+    }
+
+    return copy;
 }

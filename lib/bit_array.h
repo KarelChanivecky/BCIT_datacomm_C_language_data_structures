@@ -63,7 +63,7 @@ void bit_array_set_logging( bit_array * this, bool enable_logging );
  * Checks the bit at the specified index and returns its value (1 or 0).
  * Returns -1 and prints an error if the index is larger than length of bit_array.
  */
-bool bit_array_check_bit( bit_array * this, size_t index );
+int bit_array_check_bit( bit_array * this, size_t index );
 
 /**
  * Checks the byte starting at the specified index and returns its value.
@@ -95,5 +95,21 @@ int bit_array_set_bit( bit_array * this, size_t index, bool bit_value );
  * If array is not empty, removes the last added bit from the array.
  */
 int bit_array_pop_bit( bit_array * this );
+
+/**
+ * Combines two bit_arrays and returns a copy containing the contents of both bit_arrays together.
+ * Does not modify either of the original bit_arrays.
+ * @param first bit_array to combine
+ * @param second bit_array to combine
+ * @return a new bit_array
+ */
+bit_array * bit_array_combine(bit_array * this, bit_array * other);
+
+/**
+ * Creates a copy of passed in bit_array. Does not modify original.
+ * @param this bit_array to copy
+ * @return a new bit_array
+ */
+bit_array * bit_array_clone(bit_array * this);
 
 #endif //DC_LIBS_BIT_ARRAY_H
