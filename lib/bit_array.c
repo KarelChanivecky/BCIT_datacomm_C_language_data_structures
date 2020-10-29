@@ -142,17 +142,17 @@ int bit_array_add_byte( bit_array * this, uint8_t byte_value ) {
     return OPERATION_SUCCESS;
 }
 
-bit_array * bit_array_combine(bit_array * this, bit_array * other) {
+bit_array * bit_array_combine(bit_array * first, bit_array * second) {
     bit_array * combined = bit_array_create();
     bit_array_init(combined, 8);
 
-    for (size_t i = 0; i < this->bit_length; i++) {
-        int bit = bit_array_check_bit(this, i);
+    for (size_t i = 0; i < first->bit_length; i++) {
+        int bit = bit_array_check_bit(first, i);
         bit_array_add_bit(combined, bit);
     }
 
-    for (size_t i = 0; i < other->bit_length; i++) {
-        int bit = bit_array_check_bit(this, i);
+    for (size_t i = 0; i < second->bit_length; i++) {
+        int bit = bit_array_check_bit(second, i);
         bit_array_add_bit(combined, bit);
     }
 

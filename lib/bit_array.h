@@ -103,7 +103,7 @@ int bit_array_pop_bit( bit_array * this );
  * @param second bit_array to combine
  * @return a new bit_array
  */
-bit_array * bit_array_combine(bit_array * this, bit_array * other);
+bit_array * bit_array_combine(bit_array * first, bit_array * second);
 
 /**
  * Creates a copy of passed in bit_array. Does not modify original.
