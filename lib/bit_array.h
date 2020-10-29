@@ -79,11 +79,20 @@ uint8_t bit_array_check_byte( bit_array * this, size_t index );
 int bit_array_add_bit( bit_array * this, bool bit_value );
 
 /**
+ * NOTE: This adds byte starting at MSB.
  * Adds 8 bits to the array specified by bit_value param. This will increase
  * the bit_length of the array by 8. If new bit_length of the array exceeds bit_capacity,
  * the capacity will be doubled to make room.
  */
 int bit_array_add_byte( bit_array * this, uint8_t byte_value );
+
+/**
+ * NOTE: This adds byte starting at LSB.
+ * Adds 8 bits to the array specified by bit_value param. This will increase
+ * the bit_length of the array by 8. If new bit_length of the array exceeds bit_capacity,
+ * the capacity will be doubled to make room.
+ */
+int bit_array_add_byte_reversed( bit_array * this, uint8_t byte_value );
 
 /**
  * Sets the value of a bit at index to bit_value. This will fail if the bit has not yet been

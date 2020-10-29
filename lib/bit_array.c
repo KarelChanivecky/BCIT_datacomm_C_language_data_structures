@@ -142,6 +142,19 @@ int bit_array_add_byte( bit_array * this, uint8_t byte_value ) {
     return OPERATION_SUCCESS;
 }
 
+int bit_array_add_reversed( bit_array * this, uint8_t byte_value ) {
+    bit_array_add_bit( this, get_bit_value( byte_value, MASK_00000001 ));
+    bit_array_add_bit( this, get_bit_value( byte_value, MASK_00000010 ));
+    bit_array_add_bit( this, get_bit_value( byte_value, MASK_00000100 ));
+    bit_array_add_bit( this, get_bit_value( byte_value, MASK_00001000 ));
+    bit_array_add_bit( this, get_bit_value( byte_value, MASK_00010000 ));
+    bit_array_add_bit( this, get_bit_value( byte_value, MASK_00100000 ));
+    bit_array_add_bit( this, get_bit_value( byte_value, MASK_01000000 ));
+    bit_array_add_bit( this, get_bit_value( byte_value, MASK_10000000 ));
+
+    return OPERATION_SUCCESS;
+}
+
 bit_array * bit_array_combine(bit_array * first, bit_array * second) {
     bit_array * combined = bit_array_create();
     bit_array_init(combined, 8);
