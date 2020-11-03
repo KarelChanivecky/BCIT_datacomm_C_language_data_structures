@@ -44,6 +44,7 @@ bit_array * bit_array_create( void ) {
 }
 
 void bit_array_destroy( bit_array ** p_this ) {
+    free( (*p_this )->array );
     free( *p_this );
     *p_this = NULL;
 }
