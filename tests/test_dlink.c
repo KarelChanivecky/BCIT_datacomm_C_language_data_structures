@@ -10,6 +10,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "../lib/dlinked_list.h"
 
 static void test_dlinked_create_list() {
@@ -383,6 +384,68 @@ void test_sort( ) {
     if (all_good) {
         fprintf(stderr, "sorting all good\n");
     }
+    dlinked_free_list(&list);
+    dlinked_free_list(&sorted);
+}
+
+void err_handler() {
+    fprintf(stderr, "error in sort!");
+    exit(EXIT_FAILURE);
+}
+
+void test_inplace_sort( ) {
+    dlinked_list * list = dlinked_create_list();
+    dlinked_push(list, 3);
+    dlinked_push(list, 1);
+    dlinked_push(list, 8);
+    dlinked_push(list, 8);
+    dlinked_push(list, 0);
+    dlinked_push(list, 8);
+    dlinked_push(list, 3);
+    dlinked_push(list, 10);
+    int status;
+    list = dlinked_quicksort_custom_error_handler(list, size_comparator, err_handler, &status);
+    size_t result_arr[] = {0, 1, 3, 3, 8, 8, 8, 10};
+    int all_good = 1;
+    for (int i = 0; i < 8; i++) {
+        size_t el = (size_t) dlinked_pop_head(list);
+        if (el != result_arr[i]) {
+            fprintf(stderr, "sorting failure\nexpected: %zu\ngot: %zu\n", result_arr[i], el);
+            all_good = 0;
+        }
+    }
+    if (all_good) {
+        fprintf(stderr, "sorting all good\n");
+    }
+    dlinked_free_list(&list);
+}
+
+void test_shallow_copy() {
+    dlinked_list * list = dlinked_create_list();
+    dlinked_push(list, 3);
+    dlinked_push(list, 1);
+    dlinked_push(list, 8);
+    dlinked_push(list, 8);
+    dlinked_push(list, 0);
+    dlinked_push(list, 8);
+    dlinked_push(list, 3);
+    dlinked_push(list, 10);
+    dlinked_list * shallow_copy = dlinked_shallow_copy(list);
+    dlink * head = list->head;
+    dlink * cp = shallow_copy->head;
+    int index = 0;
+    while (index < list->size && head->content == cp->content) {
+        index++;
+        head = head->next;
+        cp = cp->next;
+    }
+    if (index == list->size) {
+        fprintf(stderr, "shallow copy passed!\n");
+    } else {
+        fprintf(stderr,"shallow copy failed at index: %d\n", index);
+    }
+    dlinked_free_list(&list);
+    dlinked_free_list(&shallow_copy);
 }
 
 int main() {
@@ -398,6 +461,8 @@ int main() {
     test_dlinked_set_value();
     test_dlinked_index_of_value();
     test_sort();
+    test_inplace_sort();
+//    test_shallow_copy();
     fprintf(stderr, "all tests are done\n");
     return 0;
 }
