@@ -363,9 +363,7 @@ dlinked_list * dlinked_quicksort_custom_error_handler( dlinked_list * list,
         dlinked_push( equal, dlinked_pop_head( higher_sorted ));
     }
     dlinked_free_list( &list);
-//    dlinked_free_list( &lower );
     dlinked_free_list( &lower_sorted );
-//    dlinked_free_list( &higher );
     dlinked_free_list( &higher_sorted );
     return equal;
 }
