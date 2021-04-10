@@ -59,7 +59,12 @@ int add( struct dc_threaded_queue * queue, void * element );
 void * take( struct dc_threaded_queue * queue );
 
 
-struct dc_threaded_queue * dc_threaded_queue_init( size_t max_size ) {
+struct dc_threaded_queue * dc_threaded_queue_init( size_t initial_consumer_value ) {
+    if (initial_consumer_value < 1) {
+
+        return NULL;
+    }
+
     struct dc_threaded_queue * new_queue = ( struct dc_threaded_queue * ) malloc( sizeof( struct dc_threaded_queue ));
 
     if ( !new_queue ) {
@@ -67,7 +72,7 @@ struct dc_threaded_queue * dc_threaded_queue_init( size_t max_size ) {
         return NULL;
     }
 
-    new_queue->consumer_sem = open_sem( max_size, &new_queue->consumer_sem_id );
+    new_queue->consumer_sem = open_sem( initial_consumer_value, &new_queue->consumer_sem_id );
     if ( !new_queue->consumer_sem ) {
         free( new_queue );
         return NULL;
@@ -140,7 +145,7 @@ int add( struct dc_threaded_queue * queue, void * element ) {
 
     stat = sem_post( queue->producer_sem );
     if (stat != 0 ) {
-        return stat;
+        return DCTQ_ERR_SPOST;
     }
 
     return SUCCESS;

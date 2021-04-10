@@ -1,6 +1,21 @@
 /**
 * @author Karel Chanivecky Garcia
 * BCIT 2021
+*
+* The dc_threaded_queue provides a thread safe queue.
+*
+* Synchronization is implemented using the POSIX standard.
+* Hence, this library is not compatible with Windows as of Apr 9, 2021.
+*
+* This queue will provide constant time for adding and taking.
+*
+* To use:
+* 1- initialize using: dc_threaded_queue_init
+* 2- add elements by: <queue_identifier>.add(<element);
+* 2- take elements by: <queue_identifier>.add();
+*
+*
+* Enjoy!
 */
 
 #ifndef DC_DATA_STRUCTURES_DC_THREADED_QUEUE_H
@@ -16,14 +31,12 @@
 // sem post
 #define DCTQ_ERR_SPOST -11 //
 
-// mutex init
-#define DCTQ_ERR_MXINIT -15
-
 // mutex lock
 #define DCTQ_ERR_MXLK -16
 
 // mutex unlock
 #define DCTQ_ERR_MXULK -17
+
 
 struct dc_threaded_queue;
 
@@ -46,10 +59,10 @@ struct dc_threaded_queue {
 /**
  * Initialize a new dc_threaded_queue.
  *
- * @param max_size The maximum size admitted by the queue. Will be used to prevent overwhelming the consumer
- * @return A new, empty queue. NULL if memory allocation failed.
+ * @param initial_consumer_value The maximum size admitted by the queue. Will be used to prevent overwhelming the consumer
+ * @return A new, empty queue. NULL if memory allocation failed, or initial value is < 1.
  */
-struct dc_threaded_queue * dc_threaded_queue_init(size_t max_size);
+struct dc_threaded_queue * dc_threaded_queue_init(size_t initial_consumer_value);
 
 /**
  * Destroy queue.
