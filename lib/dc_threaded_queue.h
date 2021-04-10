@@ -10,7 +10,7 @@
 #include "dlinked_list.h"
 #include "semaphore.h"
 
-// sem wait
+// sem consumer_wait
 #define DCTQ_ERR_SWAIT -10
 
 // sem post

@@ -26,7 +26,7 @@ sem_t * open_sem( size_t value, size_t * id ) {
         char name[255] = { 0 };
         get_sem_name( name, queue_counter );
 
-        new_sem = sem_open( name, O_CREAT, 0640, value );
+        new_sem = sem_open( name, O_CREAT | O_EXCL, 0640, value );
         *id = queue_counter;
 
         if ( new_sem == SEM_FAILED) {
@@ -73,6 +73,9 @@ struct dc_threaded_queue * dc_threaded_queue_init( size_t max_size ) {
         return NULL;
     }
 
+    int val = 0;
+    sem_getvalue(new_queue->consumer_sem, &val);
+
     new_queue->producer_sem = open_sem( 0, &new_queue->producer_sem_id );
     if ( !new_queue->producer_sem ) {
         close_sem( new_queue->consumer_sem_id );
@@ -111,6 +114,9 @@ void dc_threaded_queue_destroy( struct dc_threaded_queue ** queue ) {
 }
 
 int add( struct dc_threaded_queue * queue, void * element ) {
+    int val = 0;
+    sem_getvalue(queue->consumer_sem, &val);
+    printf("add consumer sem val: %d\n", val);
     int stat = sem_wait( queue->consumer_sem );
     if ( stat != 0 ) {
         return DCTQ_ERR_SWAIT;
@@ -141,6 +147,9 @@ int add( struct dc_threaded_queue * queue, void * element ) {
 }
 
 void * take( struct dc_threaded_queue * queue ) {
+    int val = 0;
+    sem_getvalue(queue->producer_sem, &val);
+    printf("take producer sem val: %d\n", val);
     int stat = sem_wait( queue->producer_sem );
     if ( stat != 0 ) {
         return NULL;
@@ -159,6 +168,5 @@ void * take( struct dc_threaded_queue * queue ) {
 
     pthread_mutex_unlock( &queue->list_mx );
     sem_post( queue->consumer_sem );
-
     return el;
 }
