@@ -119,9 +119,7 @@ void dc_threaded_queue_destroy( struct dc_threaded_queue ** queue ) {
 }
 
 int add( struct dc_threaded_queue * queue, void * element ) {
-    int val = 0;
-    sem_getvalue(queue->consumer_sem, &val);
-    printf("add consumer sem val: %d\n", val);
+
     int stat = sem_wait( queue->consumer_sem );
     if ( stat != 0 ) {
         return DCTQ_ERR_SWAIT;
@@ -152,9 +150,7 @@ int add( struct dc_threaded_queue * queue, void * element ) {
 }
 
 void * take( struct dc_threaded_queue * queue ) {
-    int val = 0;
-    sem_getvalue(queue->producer_sem, &val);
-    printf("take producer sem val: %d\n", val);
+
     int stat = sem_wait( queue->producer_sem );
     if ( stat != 0 ) {
         return NULL;
