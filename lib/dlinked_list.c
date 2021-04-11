@@ -330,6 +330,7 @@ dlinked_list * dlinked_quicksort_custom_error_handler( dlinked_list * list,
                                                        void(* malloc_error_handler)( void * ),
                                                        void * err_status ) {
     if ( list->size == 0 ) {
+        free(list);
         return dlinked_create_list();
     }
     void * pivot = dlinked_pop_head( list );
@@ -350,17 +351,19 @@ dlinked_list * dlinked_quicksort_custom_error_handler( dlinked_list * list,
             dlinked_push( higher, cur );
         }
     }
-    dlinked_list * lower_sorted = dlinked_quicksort( lower, comparator );
+    int status;
+    dlinked_list * lower_sorted =
+            dlinked_quicksort_custom_error_handler( lower, comparator, malloc_error_handler, &status );
     while ( 0 < lower_sorted->size ) {
         dlinked_push_head( equal, dlinked_pop_tail( lower_sorted ));
     }
-    dlinked_free_list( &lower );
-    dlinked_free_list( &lower_sorted );
-    dlinked_list * higher_sorted = dlinked_quicksort( higher, comparator );
+    dlinked_list * higher_sorted =
+            dlinked_quicksort_custom_error_handler( higher, comparator, malloc_error_handler, &status );
     while ( 0 < higher_sorted->size ) {
         dlinked_push( equal, dlinked_pop_head( higher_sorted ));
     }
-    dlinked_free_list( &higher );
+    dlinked_free_list( &list);
+    dlinked_free_list( &lower_sorted );
     dlinked_free_list( &higher_sorted );
     return equal;
 }
