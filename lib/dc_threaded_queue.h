@@ -29,7 +29,7 @@
 #define DCTQ_ERR_SWAIT -10
 
 // sem post
-#define DCTQ_ERR_SPOST -11 //
+#define DCTQ_ERR_SPOST -11
 
 // mutex lock
 #define DCTQ_ERR_MXLK -16
