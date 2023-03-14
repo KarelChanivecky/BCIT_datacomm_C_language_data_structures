@@ -378,3 +378,22 @@ void dlink_map( const dlinked_list * const list, void(* func)( void * )) {
         link = link->next;
     }
 }
+
+int dlink_to_pointer( dlinked_list * list, void ** pointer) {
+    if ( !list ) {
+        return SUCCESS;
+    }
+
+    *pointer = malloc(sizeof(void *) * list->size);
+    if (!*pointer ) {
+        return FAILURE;
+    }
+
+    dlink * link = list->head;
+    while ( link ) {
+        *pointer = link->content;
+        link = link->next;
+    }
+
+    return SUCCESS;
+}

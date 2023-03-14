@@ -189,4 +189,13 @@ dlinked_list * dlinked_quicksort_custom_error_handler( dlinked_list * list,
  */
 void dlink_map( const dlinked_list * const list, void(* func)( void * ));
 
+/**
+ * Convert linked list to pointer to void *
+ * @param list The list to convert
+ * @param pointer Will contain the list items. Must be freed.
+ * @return Success, or failure if failed to allocate memory.
+ */
+int dlink_to_pointer( dlinked_list * list, void ** pointer);
+
+
 #endif // DC_DLINKED_LIST_H
