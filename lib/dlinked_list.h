@@ -187,7 +187,7 @@ dlinked_list * dlinked_quicksort_custom_error_handler( dlinked_list * list,
 /**
  * Apply func to every element in list.
  */
-void dlink_map( const dlinked_list * const list, void(* func)( void * ));
+void dlinked_map( const dlinked_list * const list, void(* func)(void * ));
 
 /**
  * Convert linked list to pointer to void *
@@ -195,7 +195,7 @@ void dlink_map( const dlinked_list * const list, void(* func)( void * ));
  * @param pointer Will contain the list items. Must be freed.
  * @return Success, or failure if failed to allocate memory.
  */
-int dlink_to_pointer( dlinked_list * list, void ** pointer);
+int dlinked_to_pointer(dlinked_list * list, void *** pointer);
 
 
 #endif // DC_DLINKED_LIST_H

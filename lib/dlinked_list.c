@@ -368,7 +368,7 @@ dlinked_list * dlinked_quicksort_custom_error_handler( dlinked_list * list,
     return equal;
 }
 
-void dlink_map( const dlinked_list * const list, void(* func)( void * )) {
+void dlinked_map(const dlinked_list * const list, void(* func)(void * )) {
     if ( !list || !func ) {
         return;
     }
@@ -379,7 +379,8 @@ void dlink_map( const dlinked_list * const list, void(* func)( void * )) {
     }
 }
 
-int dlink_to_pointer( dlinked_list * list, void ** pointer) {
+int dlinked_to_pointer(dlinked_list * list, void *** pointer) {
+    size_t i = 0;
     if ( !list ) {
         return SUCCESS;
     }
@@ -391,8 +392,9 @@ int dlink_to_pointer( dlinked_list * list, void ** pointer) {
 
     dlink * link = list->head;
     while ( link ) {
-        *pointer = link->content;
+        (*pointer)[i] = link->content;
         link = link->next;
+        i++;
     }
 
     return SUCCESS;
