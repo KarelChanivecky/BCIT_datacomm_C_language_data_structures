@@ -448,6 +448,42 @@ void test_shallow_copy() {
     dlinked_free_list(&shallow_copy);
 }
 
+void test_to_pointer() {
+    u_int8_t ** pointer;
+    dlink * head;
+
+    dlinked_list * list = dlinked_create_list();
+    dlinked_push(list, 3);
+    dlinked_push(list, 1);
+    dlinked_push(list, 8);
+    dlinked_push(list, 8);
+    dlinked_push(list, 0);
+    dlinked_push(list, 8);
+    dlinked_push(list, 3);
+    dlinked_push(list, 10);
+    if (dlinked_to_pointer(list, (void ***)&pointer)!= SUCCESS) {
+        fprintf(stderr, "to pointer failed!\n");
+        dlinked_free_list(&list);
+        return;
+    }
+
+    head = list->head;
+    int index = 0;
+    while (index < list->size) {
+        if (pointer[index] != head->content) {
+            fprintf(stderr, "to pointer failed!\n");
+            dlinked_free_list(&list);
+            return;
+        }
+
+        index++;
+        head = head->next;
+    }
+    fprintf(stderr, "to pointer passed!\n");
+    dlinked_free_list(&list);
+}
+
+
 int main() {
     test_dlinked_free_list();
     test_dlinked_push();
@@ -462,7 +498,8 @@ int main() {
     test_dlinked_index_of_value();
     test_sort();
     test_inplace_sort();
-//    test_shallow_copy();
+    test_shallow_copy();
+    test_to_pointer();
     fprintf(stderr, "all tests are done\n");
     return 0;
 }
